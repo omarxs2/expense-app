@@ -1,5 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import ExpensesOutput from '../components/expenses/ExpensesOutput';
 
 function AllExpenses(props) {
@@ -9,9 +8,7 @@ function AllExpenses(props) {
     { id: 'e3', description: 'Phone covers', date: new Date('2022/10/02'), amount: 79.99 },
     { id: 'e4', description: 'Bills payment', date: new Date('2022/10/03'), amount: 112.89 },
     { id: 'e5', description: 'Labtop', date: new Date('2022/10/02'), amount: 435 },
-
   ]
-
 
   return (
     <View style={styles.container}>

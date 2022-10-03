@@ -1,5 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import ExpensesOutput from '../components/expenses/ExpensesOutput';
 
 function RecentExpenses(props) {
@@ -10,7 +9,6 @@ function RecentExpenses(props) {
 
   ]
 
-
   return (
     <View style={styles.container}>
       <ExpensesOutput expenses={expenses} period={'Last 7 Days'} />
@@ -18,7 +16,7 @@ function RecentExpenses(props) {
   );
 }
 
-export default  RecentExpenses;
+export default RecentExpenses;
 
 const styles = StyleSheet.create({
   container: {

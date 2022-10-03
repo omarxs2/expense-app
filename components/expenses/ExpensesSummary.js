@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { GlobalStyles } from '../../constants/style'
 
 function ExpensesSummary({ expenses, period }) {
@@ -10,8 +10,7 @@ function ExpensesSummary({ expenses, period }) {
         <View style={styles.container}>
             <Text style={styles.text}>{period} Expenses </Text>
             <View style={styles.textBack}>
-            <Text style={styles.text}>${expensesSum.toFixed(2)}</Text>
-
+                <Text style={styles.text}>${expensesSum.toFixed(2)}</Text>
             </View>
         </View>
 
@@ -29,16 +28,15 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 8,
         borderRadius: 8,
-        margin: 4,
-
+        margin: 4
     },
     text: {
         color: GlobalStyles.colors.secondary100,
     },
     textBack: {
         backgroundColor: GlobalStyles.colors.secondary500,
-        padding:4,
-        borderRadius:4
+        padding: 4,
+        borderRadius: 4
 
     }
 });

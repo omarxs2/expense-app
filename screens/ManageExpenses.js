@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 
 function ManageExpenses(props) {
@@ -9,7 +8,7 @@ function ManageExpenses(props) {
   );
 }
 
-export default  ManageExpenses;
+export default ManageExpenses;
 
 const styles = StyleSheet.create({
   container: {
