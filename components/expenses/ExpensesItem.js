@@ -1,14 +1,20 @@
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { GlobalStyles } from '../../constants/style'
-
-
+import { useNavigation } from '@react-navigation/native'
 
 function ExpensesItem({ itemData }) {
+    const navigation = useNavigation();
+
+    const onPressHandler = () => {
+        navigation.navigate('ManageExpenses', {
+            expenseId: itemData.item.id
+        })
+    }
     return (
         <Pressable
             android_ripple={{ color: '#817f7f' }}
             style={({ pressed }) => pressed && styles.pressed}
-            onPress={() => { console.log('asd') }}>
+            onPress={onPressHandler}>
             <View style={styles.container}>
                 <View >
                     <Text>{itemData.item.description}</Text>
