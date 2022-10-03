@@ -5,7 +5,6 @@ function ManageExpenses(props) {
   return (
     <View style={styles.container}>
       <Text>Manage Expenses</Text>
-      <StatusBar style="auto" />
     </View>
   );
 }
