@@ -1,22 +1,24 @@
-import { useLayoutEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { useLayoutEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import IconButton from '../components/ui/IconButton';
 import { GlobalStyles } from '../constants/style'
-import CustomButton from '../components/ui/CustomButton';
 import { useSelector, useDispatch } from 'react-redux'
 import { addRecord, removeRecord, updateRecord } from '../store/expenses'
 import ExpensesForum from '../components/forum/ExpensesForum';
+import { addExpense, updateExpense, deleteExpense } from '../services/expenseServices'
+import ErrorOverlay from '../components/ui/ErrorOverlay';
 
 function ManageExpenses({ route, navigation }) {
   const expenses = useSelector((state) => state.expenses.expenses)
   const dispach = useDispatch();
 
+  const [isSubmiting, setIsSubmiting] = useState(true);
+  const [error, setError] = useState(null);
+
   const id = route.params?.expenseId
   const isEditing = !!id;
 
   const currentRecord = expenses.find((exp) => exp.id === id);
-
-
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -28,28 +30,59 @@ function ManageExpenses({ route, navigation }) {
     navigation.goBack();
   }
 
-  const deleteHandler = () => {
-    dispach(removeRecord({ id: id }))
-    navigation.goBack();
+  const deleteHandler = async () => {
+    setIsSubmiting(true);
+    try {
+      await deleteExpense(id);
+      dispach(removeRecord({ id: id }))
+      navigation.goBack();
+    } catch (error) {
+      setError('Could not delete the record - Please try again later.');
+      setIsSubmiting(false);
+    }
+
   }
 
-  const confirmHandler = (values) => {
-    if (isEditing) {
-      dispach(updateRecord({ id: id, ...values }));
-    } else {
-      dispach(addRecord(values));
+  const confirmHandler = async (values) => {
+    try {
+      if (isEditing) {
+        await updateExpense(id,
+          {
+            amount: values.record.amount,
+            description: values.record.description,
+            date: values.record.date
+          }
+        )
+        dispach(updateRecord({ id: id, ...values }));
+      } else {
+        const id = await addExpense(values.record)
+        dispach(addRecord({ id, ...values }));
+      }
+      navigation.goBack();
+    } catch (error) {
+      setError('Could not add/update the record - Please try again later.');
+      setIsSubmiting(false);
     }
-    navigation.goBack();
+
+
   }
+
+  const errorHandler = () => {
+    setError(null);
+  }
+  if (!isSubmiting && error) {
+    return <ErrorOverlay message={error} onConfirm={errorHandler} />
+  }
+
 
   return (
     <View style={styles.container} >
 
-      <ExpensesForum 
-      currentRecord={currentRecord}
-      isEditing={isEditing} 
-      onSubmit={confirmHandler} 
-      onClose={closeHandler} />
+      <ExpensesForum
+        currentRecord={currentRecord}
+        isEditing={isEditing}
+        onSubmit={confirmHandler}
+        onClose={closeHandler} />
 
       {
         isEditing && (

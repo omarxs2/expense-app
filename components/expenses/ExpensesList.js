@@ -6,7 +6,7 @@ const ItemData = (itemData) => {
 }
 
 function ExpensesList({ expenses }) {
-    return <FlatList data={expenses} renderItem={ItemData} keyExtractor={(item) => item.id} />
+    return <FlatList data={expenses} renderItem={ItemData} keyExtractor={(item) => item.id || new Date().toString()+Math.random().toString() } />
 }
 
 export default ExpensesList;

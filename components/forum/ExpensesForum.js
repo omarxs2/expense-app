@@ -11,7 +11,7 @@ function ExpensesForum({ isEditing, onSubmit, onClose, currentRecord }) {
     const [inputValues, setValues] = useState({
         amount: currentRecord?.amount.toString() || '',
         date: currentRecord?.date.toISOString().slice(0, 10) || today.toISOString().slice(0, 10),
-        desc: currentRecord?.description.toString() || '',
+        description: currentRecord?.description.toString() || '',
     });
 
     const inputChangeHandler = (inputIdentifier, value) => {
@@ -23,7 +23,7 @@ function ExpensesForum({ isEditing, onSubmit, onClose, currentRecord }) {
 
     const inputHandler = () => {
         const values = {
-            description: inputValues.desc,
+            description: inputValues.description,
             date: new Date(inputValues.date),
             amount: +inputValues.amount.replace(',', '.')
         }
@@ -53,7 +53,7 @@ function ExpensesForum({ isEditing, onSubmit, onClose, currentRecord }) {
             <View style={styles.innerContainer}>
                 <Input rowInputStyle={rowInputStyle} label='Amount' textInputConfig={
                     {
-                        invalid:true,
+                        invalid: true,
                         placeholder: 'Amount in $$',
                         keyboardType: 'decimal-pad',
                         placeholderTextColor: '#616161',
@@ -81,9 +81,8 @@ function ExpensesForum({ isEditing, onSubmit, onClose, currentRecord }) {
                     multiline: true,
                     autoCorrect: false,
                     autoCapitalize: 'words',
-                    onChangeText: (value) => inputChangeHandler('desc', value),
-                    value: inputValues.desc
-
+                    onChangeText: (value) => inputChangeHandler('description', value),
+                    value: inputValues.description
                 }
             }
             />

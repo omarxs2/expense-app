@@ -14,11 +14,24 @@ import AllExpenses from './screens/AllExpenses'
 import RecentExpenses from './screens/RecentExpenses'
 import ManageExpenses from './screens/ManageExpenses'
 import IconButton from './components/ui/IconButton';
+import { useLayoutEffect } from 'react';
+import { getExpenses } from './services/expenseServices'
+import { setExpenses } from './store/expenses'
+import { useDispatch } from 'react-redux'
 
 const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
 
 const ExpensesOverviewTabs = () => {
+  const dispach = useDispatch();
+
+  useLayoutEffect(() => {
+    const fetchData = async () => {
+      const resp = await getExpenses();
+      dispach(setExpenses({ expenses: resp }))
+    }
+    fetchData();
+  }, [])
 
   return (
     <BottomTabs.Navigator
