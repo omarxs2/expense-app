@@ -1,12 +1,22 @@
 import { useLayoutEffect } from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import IconButton from '../components/ui/IconButton';
 import { GlobalStyles } from '../constants/style'
 import CustomButton from '../components/ui/CustomButton';
+import { useSelector, useDispatch } from 'react-redux'
+import { addRecord, removeRecord, updateRecord } from '../store/expenses'
+import ExpensesForum from '../components/forum/ExpensesForum';
 
 function ManageExpenses({ route, navigation }) {
+  const expenses = useSelector((state) => state.expenses.expenses)
+  const dispach = useDispatch();
+
   const id = route.params?.expenseId
   const isEditing = !!id;
+
+  const currentRecord = expenses.find((exp) => exp.id === id);
+
+
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -14,31 +24,37 @@ function ManageExpenses({ route, navigation }) {
     })
   }, [navigation, isEditing])
 
-  const closeHandler = ()=>{
+  const closeHandler = () => {
     navigation.goBack();
   }
+
+  const deleteHandler = () => {
+    dispach(removeRecord({ id: id }))
+    navigation.goBack();
+  }
+
+  const confirmHandler = (values) => {
+    if (isEditing) {
+      dispach(updateRecord({ id: id, ...values }));
+    } else {
+      dispach(addRecord(values));
+    }
+    navigation.goBack();
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Hi</Text>
-      <View style={styles.buttonsContainer}>
-        <CustomButton
-        onPress={closeHandler}
-          color={'#fff'}
-          textColor={GlobalStyles.colors.secondary500}
-          borderColor={GlobalStyles.colors.secondary500}>
-          Cancel
-        </CustomButton>
-        <CustomButton
-          color={GlobalStyles.colors.secondary500}
-          textColor={'#fff'}>
-          {isEditing ? 'Edit' : 'Add'}
-        </CustomButton>
-      </View>
+    <View style={styles.container} >
+
+      <ExpensesForum 
+      currentRecord={currentRecord}
+      isEditing={isEditing} 
+      onSubmit={confirmHandler} 
+      onClose={closeHandler} />
 
       {
         isEditing && (
           <View style={styles.deleteButton}>
-            <IconButton icon='trash' size={24} color={GlobalStyles.colors.secondary500} />
+            <IconButton onPress={deleteHandler} icon='trash' size={24} color={GlobalStyles.colors.secondary500} />
           </View>
         )
       }
@@ -53,13 +69,7 @@ export default ManageExpenses;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding:6,
-     
-  },
-  buttonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems:'center'
+    padding: 6,
   },
   deleteButton: {
     margin: 10,

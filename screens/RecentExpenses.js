@@ -1,17 +1,20 @@
 import { StyleSheet, View } from 'react-native';
 import ExpensesOutput from '../components/expenses/ExpensesOutput';
+import { useSelector } from 'react-redux'
 
 function RecentExpenses(props) {
+  const expenses = useSelector((state) => state.expenses.expenses)
 
-  let expenses = [
-    { id: 'e1', description: 'Taxis & buses', date: new Date('2022/10/01'), amount: 99 },
-    { id: 'e2', description: 'Milano ticket', date: new Date('2022/10/01'), amount: 100 },
+  const last7DaysExpenses = expenses.filter((exp) => {
+    const today = new Date();
+    const before7Days = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
+    return exp.date > before7Days
+  });
 
-  ]
 
   return (
     <View style={styles.container}>
-      <ExpensesOutput expenses={expenses} period={'Last 7 Days'} />
+      <ExpensesOutput fallBackText='No expenses on the last 7 days.' expenses={last7DaysExpenses} period={'Last 7 Days'} />
     </View>
   );
 }

@@ -7,6 +7,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import { Provider } from 'react-redux';
+import { store } from './store/store';
+
 import AllExpenses from './screens/AllExpenses'
 import RecentExpenses from './screens/RecentExpenses'
 import ManageExpenses from './screens/ManageExpenses'
@@ -61,26 +64,28 @@ const ExpensesOverviewTabs = () => {
 export default function App() {
   return (
     <>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: { backgroundColor: GlobalStyles.colors.primary900 },
-            headerTintColor: GlobalStyles.colors.secondary500,
-          }}
-        >
-          <Stack.Screen
-            name='ExpensesOverview'
-            component={ExpensesOverviewTabs}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen name='ManageExpenses' 
-          component={ManageExpenses} 
-          options={{
-            presentation:'modal'
-          }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: { backgroundColor: GlobalStyles.colors.primary900 },
+              headerTintColor: GlobalStyles.colors.secondary500,
+            }}
+          >
+            <Stack.Screen
+              name='ExpensesOverview'
+              component={ExpensesOverviewTabs}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen name='ManageExpenses'
+              component={ManageExpenses}
+              options={{
+                presentation: 'modal'
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
       <StatusBar style='light' />
 
     </>

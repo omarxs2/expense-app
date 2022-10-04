@@ -18,7 +18,7 @@ function ExpensesItem({ itemData }) {
             <View style={styles.container}>
                 <View >
                     <Text>{itemData.item.description}</Text>
-                    <Text style={styles.text} >{itemData.item.date.toLocaleDateString()}</Text>
+                    <Text style={styles.text} >{itemData.item.date.toISOString().slice(0,10) }</Text>
                 </View>
                 <Text>${itemData.item.amount.toFixed(2)}</Text>
             </View>
